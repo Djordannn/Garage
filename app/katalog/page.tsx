@@ -1,38 +1,10 @@
-"use client";
-
-import Navbar from "./components/navbar";
-import Autoplay from "embla-carousel-autoplay";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Gauge } from "lucide-react";
-
-export default function Home() {
+const Katalog = () => {
   return (
-    <div className=" font-sans px-[5%]">
-      <div className="mt-6">
-        <Carousel plugins={[Autoplay({ delay: 5000 })]}>
-          <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <img
-                  src="https://i.pinimg.com/736x/7d/e0/f4/7de0f4c59fca6e3d5e3ec82afb2489e5.jpg"
-                  className="h-64 w-full bg-cover rounded-lg border-none"
-                  style={{
-                    backgroundImage: `url('/carousel/carousel-${
-                      index + 1
-                    }.jpg')`,
-                  }}
-                ></img>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
+    <div className="px-[5%]">
       <div className="mt-10 grid grid-cols-2 gap-6">
         {Array.from({ length: 8 }).map((_, index) => (
           <Card className="p-0" key={index}>
@@ -60,4 +32,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Katalog;

@@ -9,7 +9,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Navbar() {
   return (
-    <div className="font-sans">
+    <div className="font-sans px-[5%]">
       <nav className="grid grid-cols-3 sm:grid-cols-2 items-center py-6">
         <div>
           <Image src={logo} alt="BMW" className="w-[150px]" />
