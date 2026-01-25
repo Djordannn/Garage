@@ -5,7 +5,7 @@ import { IoLogoWhatsapp } from "react-icons/io5";
 
 const Footer = () => {
   return (
-    <div className="px-[5%] mt-8 bg-[#2d2d2d] text-[#ffff] py-6 grid grid-cols-5 items-start">
+    <div className="px-[5%] mt-8 bg-[#2d2d2d] text-[#ffff] py-6 grid grid-cols-5 items-start rounded-t-4xl">
       <div className="col-span-3">
         <h2 className="mb-4">Logo</h2>
         <p className="text-[11px] w-[80%] text-zinc-400">

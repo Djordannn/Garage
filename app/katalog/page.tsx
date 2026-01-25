@@ -1,33 +1,131 @@
+"use client";
+
 import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Gauge } from "lucide-react";
+import { Clock, Gauge, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { IoSearchOutline } from "react-icons/io5";
+import { Entry } from "contentful";
+import { TypeGarageSkeleton } from "../types/typeGarage";
+import contentfulClient from "@/app/lib/contentfulClient";
+import { TypeImgAsset } from "../types/galleryCms";
+
 const Katalog = () => {
+  const [garageData, setGarageData] = React.useState<
+    Entry<TypeGarageSkeleton>[]
+  >([]);
+
+  const fetchdata = async () => {
+    try {
+      const res = await contentfulClient.getEntries<TypeGarageSkeleton>({
+        content_type: "garage",
+      });
+      setGarageData(res.items);
+      console.log("data : ", res.items);
+    } catch (error) {
+      console.log("ërror from fetch data contentful", error);
+    }
+  };
+
+  const formatToRupiah = (amount) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(amount);
+  };
+
+  React.useEffect(() => {
+    fetchdata();
+  }, []);
+
   return (
     <div className="px-[5%]">
-      <div className="mt-10 grid grid-cols-2 gap-6">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <Card className="p-0" key={index}>
-            <CardHeader className="p-0">
-              <img
-                src="https://i.pinimg.com/736x/c0/c0/91/c0c091596d3d0fe27741752ba7c1a8e6.jpg"
-                alt=""
-                className=" w-full object-cover rounded-t-lg"
-              />
-            </CardHeader>
-            <CardContent className="pb-4">
-              <h2 className="text-lg font-semibold">Rp 399.000.000</h2>
-              <p>Honda Civic Ferio</p>
-              <div className="flex gap-2 mt-2 text-gray-600">
-                <Badge variant={"outline"} className="flex items-center ">
-                  <Clock /> 2016
-                </Badge>
-                <Badge variant={"outline"} className="flex items-center ">
-                  <Gauge /> 20000 km
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
+      <div>
+        <div className=" relative flex items-center gap-2">
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 flex items-center">
+            <Button className="text-lg rounded-2xl text-gray-700 hover:bg-transparent  bg-transparent ">
+              <IoSearchOutline />
+            </Button>
+          </div>
+          <Input
+            className="rounded-2xl pl-[2.5rem]"
+            placeholder="Search your car..."
+          ></Input>
+          {/* 
+          <SidebarTrigger /> */}
+        </div>
+        <div className="flex gap-2 mt-4">
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Toyota
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Honda
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Mitsubishi
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Suzuki
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Daihatsu
+          </Button>
+        </div>
+      </div>
+      <div className="mt-6 grid grid-cols-2 gap-6">
+        {garageData.map((value, index) => (
+          <a key={index} href={`katalog/${value.fields.slug}`}>
+            <Card className="p-0">
+              <CardHeader className="p-0">
+                <img
+                  src={`https:${
+                    (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
+                  }`}
+                  alt="learn"
+                  className="w-full h-[400px] rounded-t-lg object-cover"
+                />
+              </CardHeader>
+              <CardContent className="pb-4">
+                <h2 className="text-lg font-semibold">
+                  {formatToRupiah(value.fields.price)}
+                </h2>
+                <p className="text-sm mt-1">
+                  {value.fields.title && typeof value.fields.title === "string"
+                    ? value.fields.title
+                    : "No Title"}
+                </p>
+                <div className="flex gap-2 mt-2 text-gray-600">
+                  <Badge variant={"outline"} className="flex items-center ">
+                    <Clock /> {value.fields.tahunProduksi}
+                  </Badge>
+                  <Badge variant={"outline"} className="flex items-center ">
+                    <Gauge /> {value.fields.jalanKilometer} km
+                  </Badge>
+                  <Badge variant={"outline"} className="flex items-center ">
+                    <Calendar />{" "}
+                    {value.fields.pajak === true ? "Pajak hidup" : "Pajak mati"}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </a>
         ))}
       </div>
     </div>

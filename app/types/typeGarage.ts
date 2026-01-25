@@ -27,8 +27,9 @@ export interface TypeGarageAsset {
   fields: {
     title: string;
     price: string;
-    tahunMobil: string;
-    kilometer: string;
+    tahunProduksi: string;
+    jalanKilometer: string;
+    description: string;
     image: {
       fields: {
         file: {
@@ -43,7 +44,7 @@ export interface TypeGarageAsset {
         };
       };
     };
-    pajak: string;
+    pajak: boolean;
     slug: string;
 
     file: {

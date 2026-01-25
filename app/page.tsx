@@ -10,12 +10,15 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Gauge } from "lucide-react";
+import { Calendar, Clock, Gauge } from "lucide-react";
 
 import contentfulClient from "./lib/contentfulClient";
 import { TypeImgAsset } from "./types/galleryCms";
 import { TypeGarageSkeleton } from "./types/typeGarage";
 import { Entry } from "contentful";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { IoSearchOutline } from "react-icons/io5";
 
 export default function Home() {
   const [garageData, setGarageData] = React.useState<
@@ -47,6 +50,53 @@ export default function Home() {
 
   return (
     <div className=" font-sans px-[5%]">
+      <div>
+        <div className=" relative flex items-center gap-2">
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 flex items-center">
+            <Button className="text-lg rounded-2xl text-gray-700 hover:bg-transparent  bg-transparent ">
+              <IoSearchOutline />
+            </Button>
+          </div>
+          <Input
+            className="rounded-2xl pl-[2.5rem]"
+            placeholder="Search your car..."
+          ></Input>
+          {/* 
+          <SidebarTrigger /> */}
+        </div>
+        <div className="flex gap-2 mt-4">
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Toyota
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Honda
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Mitsubishi
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Suzuki
+          </Button>
+          <Button
+            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+            variant={"outline"}
+          >
+            Daihatsu
+          </Button>
+        </div>
+      </div>
       <div className="mt-6">
         <Carousel plugins={[Autoplay({ delay: 5000 })]}>
           <CarouselContent>
@@ -54,7 +104,7 @@ export default function Home() {
               <CarouselItem key={index}>
                 <img
                   src="https://i.pinimg.com/736x/7d/e0/f4/7de0f4c59fca6e3d5e3ec82afb2489e5.jpg"
-                  className="h-64 w-full bg-cover rounded-lg border-none"
+                  className="h-[400px] w-full bg-cover rounded-lg border-none"
                   style={{
                     backgroundImage: `url('/carousel/carousel-${
                       index + 1
@@ -76,7 +126,7 @@ export default function Home() {
                     (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
                   }`}
                   alt="learn"
-                  className="aspect-[4/3] rounded-t-lg object-cover"
+                  className="w-full h-[400px]  rounded-t-lg object-cover"
                 />
               </CardHeader>
               <CardContent className="pb-4">
@@ -91,7 +141,11 @@ export default function Home() {
                     <Clock /> {value.fields.tahunProduksi}
                   </Badge>
                   <Badge variant={"outline"} className="flex items-center ">
-                    <Gauge /> {value.fields.jalanKilometer}
+                    <Gauge /> {value.fields.jalanKilometer} km
+                  </Badge>
+                  <Badge variant={"outline"} className="flex items-center ">
+                    <Calendar />{" "}
+                    {value.fields.pajak === true ? "Pajak hidup" : "Pajak mati"}
                   </Badge>
                 </div>
               </CardContent>
