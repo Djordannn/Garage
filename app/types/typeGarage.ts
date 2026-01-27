@@ -9,11 +9,15 @@ import type {
 export interface TypeGarageFields {
   title: EntryFieldTypes.Symbol;
   price: EntryFieldTypes.Symbol;
-  tahunMobil?: EntryFieldTypes.Integer;
-  kilometer?: EntryFieldTypes.Integer;
+  tahunProduksi?: EntryFieldTypes.Integer;
+  jalanKilometer?: EntryFieldTypes.Integer;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   thumbnail?: EntryFieldTypes.AssetLink;
   pajak?: EntryFieldTypes.Boolean;
+  merekMobil?: EntryFieldTypes.Integer;
+  nomotrPlat?: EntryFieldTypes.Integer;
+  namaPemilik?: EntryFieldTypes.Integer;
+  description?: EntryFieldTypes.Integer;
 }
 
 export type TypeGarageSkeleton = EntrySkeletonType<TypeGarageFields, "garage">;
@@ -30,6 +34,9 @@ export interface TypeGarageAsset {
     tahunProduksi: string;
     jalanKilometer: string;
     description: string;
+    merekMobil: string;
+    nomorPlat: string;
+    namaPemilik: string;
     image: {
       fields: {
         file: {

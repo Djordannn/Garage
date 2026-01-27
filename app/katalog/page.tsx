@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Gauge, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +23,13 @@ const Katalog = () => {
   const [garageData, setGarageData] = React.useState<
     Entry<TypeGarageSkeleton>[]
   >([]);
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
+    null,
+  );
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [searchActive, setSearchActive] = React.useState<boolean>(false);
+
+  const categories = ["Toyota", "Honda", "Mitsubishi", "Suzuki", "Daihatsu"];
 
   const fetchdata = async () => {
     try {
@@ -36,6 +50,27 @@ const Katalog = () => {
     }).format(amount);
   };
 
+  const handleSearch = () => {
+    setSearchActive(true);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setSearchActive(false);
+  };
+
+  const filteredData = garageData.filter((item) => {
+    const matchCategory = selectedCategory
+      ? item.fields.merekMobil?.includes(selectedCategory)
+      : true;
+
+    const matchSearch = searchActive
+      ? item.fields.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    return matchCategory && matchSearch;
+  });
+
   React.useEffect(() => {
     fetchdata();
   }, []);
@@ -43,90 +78,98 @@ const Katalog = () => {
   return (
     <div className="px-[5%]">
       <div>
-        <div className=" relative flex items-center gap-2">
-          <div className="absolute top-1/2 left-0 -translate-y-1/2 flex items-center">
-            <Button className="text-lg rounded-2xl text-gray-700 hover:bg-transparent  bg-transparent ">
+        <div className="relative flex items-center gap-2">
+          <div className="absolute top-1/2 left-0 flex -translate-y-1/2 items-center">
+            <Button
+              onClick={handleSearch}
+              className="rounded-2xl bg-transparent text-lg text-gray-700 hover:bg-transparent"
+            >
               <IoSearchOutline />
             </Button>
           </div>
           <Input
             className="rounded-2xl pl-[2.5rem]"
             placeholder="Search your car..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Ënter") {
+                handleSearch();
+              }
+            }}
           ></Input>
+          {searchActive && (
+            <Button
+              onClick={handleClearSearch}
+              variant="outline"
+              className="rounded-2xl"
+            >
+              Clear
+            </Button>
+          )}
           {/* 
           <SidebarTrigger /> */}
         </div>
-        <div className="flex gap-2 mt-4">
-          <Button
-            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
-            variant={"outline"}
-          >
-            Toyota
-          </Button>
-          <Button
-            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
-            variant={"outline"}
-          >
-            Honda
-          </Button>
-          <Button
-            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
-            variant={"outline"}
-          >
-            Mitsubishi
-          </Button>
-          <Button
-            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
-            variant={"outline"}
-          >
-            Suzuki
-          </Button>
-          <Button
-            className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
-            variant={"outline"}
-          >
-            Daihatsu
-          </Button>
+        <div className="mt-4 flex gap-2">
+          {categories.map((category) => (
+            <Button
+              key={category}
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category ? null : category,
+                )
+              }
+              className="rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+              variant={selectedCategory === category ? "default" : "outline"}
+            >
+              {category}
+            </Button>
+          ))}
         </div>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-6">
-        {garageData.map((value, index) => (
-          <a key={index} href={`katalog/${value.fields.slug}`}>
-            <Card className="p-0">
-              <CardHeader className="p-0">
-                <img
-                  src={`https:${
-                    (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
-                  }`}
-                  alt="learn"
-                  className="w-full h-[400px] rounded-t-lg object-cover"
-                />
-              </CardHeader>
-              <CardContent className="pb-4">
-                <h2 className="text-lg font-semibold">
-                  {formatToRupiah(value.fields.price)}
-                </h2>
-                <p className="text-sm mt-1">
-                  {value.fields.title && typeof value.fields.title === "string"
-                    ? value.fields.title
-                    : "No Title"}
-                </p>
-                <div className="flex gap-2 mt-2 text-gray-600">
-                  <Badge variant={"outline"} className="flex items-center ">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
+        {filteredData.length > 0 ? (
+          filteredData.map((value, index) => (
+            <a key={index} href={`katalog/${value.fields.slug}`}>
+              <Card className="p-2">
+                <CardHeader className="p-0">
+                  <img
+                    src={`https:${
+                      (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
+                    }`}
+                    alt="learn"
+                    className="h-[150px] w-full rounded-lg object-cover lg:h-[200px]"
+                  />
+                </CardHeader>
+                <CardContent className="mt-[-1rem] p-0">
+                  <CardTitle>{formatToRupiah(value.fields.price)}</CardTitle>
+                  {value.fields.title &&
+                  typeof value.fields.title === "string" ? (
+                    <CardDescription>{value.fields.title}</CardDescription>
+                  ) : (
+                    "No Title"
+                  )}
+                </CardContent>
+                <CardFooter className="flex flex-wrap gap-1 p-0">
+                  <Badge variant={"outline"} className="flex items-center">
                     <Clock /> {value.fields.tahunProduksi}
                   </Badge>
-                  <Badge variant={"outline"} className="flex items-center ">
+                  <Badge variant={"outline"} className="flex items-center">
                     <Gauge /> {value.fields.jalanKilometer} km
                   </Badge>
-                  <Badge variant={"outline"} className="flex items-center ">
+                  <Badge variant={"outline"} className="flex items-center">
                     <Calendar />{" "}
                     {value.fields.pajak === true ? "Pajak hidup" : "Pajak mati"}
                   </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </a>
-        ))}
+                </CardFooter>
+              </Card>
+            </a>
+          ))
+        ) : (
+          <p className="col-span-2 mt-6 text-center text-gray-500">
+            Tidak ada mobil yang ditemukan
+          </p>
+        )}
       </div>
     </div>
   );

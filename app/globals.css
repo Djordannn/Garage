@@ -123,3 +123,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Pada layar kecil (mobile) */
+.categories-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Untuk meningkatkan performa di iOS */
+  white-space: nowrap; /* Mencegah elemen di dalamnya ter-wrap */
+}
+
+/* Menghilangkan scrollbar visual */
+.categories-container::-webkit-scrollbar {
+  display: none; /* Menyembunyikan scrollbar */
+}
+
+/* Pada layar besar (desktop) */
+@media (min-width: 1024px) {
+  /* 1024px bisa diubah sesuai breakpoints */
+  .categories-container {
+    overflow-x: unset; /* Nonaktifkan scroll horizontal */
+    white-space: normal; /* Biarkan elemen ter-wrap jika perlu */
+  }
+}

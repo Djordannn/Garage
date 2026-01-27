@@ -1,24 +1,49 @@
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import Link from "next/link";
-import { IoSearchOutline } from "react-icons/io5";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Funnel } from "lucide-react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Menu } from "lucide-react";
+import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
 
 export default function Navbar() {
   return (
-    <div className="font-sans px-[5%]">
-      <nav className="grid grid-cols-2 sm:grid-cols-2 items-center pt-6">
+    <div className="px-[5%] font-sans">
+      <nav className="grid grid-cols-2 items-center pt-6 sm:grid-cols-2">
         <Link href="/">
           <Image src={logo} alt="BMW" className="w-[150px]" />
         </Link>
-        <div className="flex gap-6 sm:justify-end text-gray-700 font-medium">
+        <div className="hidden gap-6 font-medium text-gray-700 sm:justify-end lg:flex">
           <Link href="/">Beranda</Link>
           <Link href="/katalog">Katalog</Link>
           <Link href="/titip_jual">Titip Jual</Link>
           <Link href="/contact">Contact</Link>
+        </div>
+        <div className="z-50 flex justify-end lg:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"outline"}>
+                <Menu />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mt-2 rounded-lg bg-white p-2 shadow-lg">
+              <DropdownMenuItem>
+                <Link href="/">Beranda</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/katalog">Katalog</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/titip_jual">Titip Jual</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/contact">Contact</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </nav>
     </div>
