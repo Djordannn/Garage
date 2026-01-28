@@ -14,7 +14,7 @@ export default function Navbar() {
     <div className="px-[5%] font-sans">
       <nav className="grid grid-cols-2 items-center sm:grid-cols-2 md:pt-6">
         <Link href="/">
-          <Image src={logo} alt="BMW" className="w-[150px]" />
+          <h2 className="text-2xl font-semibold">Logo</h2>
         </Link>
         <div className="hidden gap-6 font-medium text-gray-700 sm:justify-end lg:flex">
           <Link href="/">Beranda</Link>
