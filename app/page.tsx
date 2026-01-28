@@ -73,11 +73,13 @@ export default function Home() {
 
   const filteredData = garageData.filter((item) => {
     const matchCategory = selectedCategory
-      ? (item.fields.merekMobil as any)?.toString().includes(selectedCategory)
+      ? typeof item.fields.merekMobil === "string" &&
+        item.fields.merekMobil.includes(selectedCategory)
       : true;
 
     const matchSearch = searchActive
-      ? item.fields.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      ? typeof item.fields.title === "string" &&
+        item.fields.title.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
     return matchCategory && matchSearch;
@@ -178,7 +180,7 @@ export default function Home() {
                 href={`katalog/${value.fields.slug}`}
                 className="transition-shadow hover:shadow-lg"
               >
-                <Card className="p-2">
+                <Card className="flex h-full flex-col p-2">
                   <CardHeader className="p-0">
                     <img
                       src={`https:${
@@ -191,23 +193,38 @@ export default function Home() {
                       className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
                     />
                   </CardHeader>
-                  <CardContent className="mt-[-1rem] p-0">
-                    <CardTitle>
-                      {formatToRupiah(parseInt(value.fields.price))}
-                    </CardTitle>
-                    {value.fields.title &&
-                    typeof value.fields.title === "string" ? (
-                      <CardDescription>{value.fields.title}</CardDescription>
-                    ) : (
-                      "No Title"
-                    )}
+                  <CardContent className="mt-[-1rem] flex flex-1 flex-col justify-between p-0">
+                    <div>
+                      <CardTitle>
+                        {formatToRupiah(
+                          typeof value.fields.price === "string"
+                            ? parseInt(value.fields.price)
+                            : 0,
+                        )}
+                      </CardTitle>
+                      {value.fields.title &&
+                      typeof value.fields.title === "string" ? (
+                        <CardDescription>{value.fields.title}</CardDescription>
+                      ) : (
+                        "No Title"
+                      )}
+                    </div>
                   </CardContent>
                   <CardFooter className="flex flex-wrap gap-1 p-0">
                     <Badge variant={"outline"} className="flex items-center">
-                      <Clock /> {value.fields.tahunProduksi}
+                      <Clock />{" "}
+                      {typeof value.fields.tahunProduksi === "number" ||
+                      typeof value.fields.tahunProduksi === "string"
+                        ? value.fields.tahunProduksi
+                        : ""}
                     </Badge>
                     <Badge variant={"outline"} className="flex items-center">
-                      <Gauge /> {value.fields.jalanKilometer} km
+                      <Gauge />{" "}
+                      {typeof value.fields.jalanKilometer === "number" ||
+                      typeof value.fields.jalanKilometer === "string"
+                        ? value.fields.jalanKilometer
+                        : ""}{" "}
+                      km
                     </Badge>
                     <Badge variant={"outline"} className="flex items-center">
                       <Calendar />{" "}

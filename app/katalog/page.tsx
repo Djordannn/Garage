@@ -48,11 +48,11 @@ const Katalog = () => {
     }
   };
 
-  const formatToRupiah = (amount) => {
+  const formatToRupiah = (amount: string) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).format(amount);
+    }).format(Number(amount));
   };
 
   const handleSearch = () => {
@@ -66,11 +66,13 @@ const Katalog = () => {
 
   const filteredData = garageData.filter((item) => {
     const matchCategory = selectedCategory
-      ? item.fields.merekMobil?.includes(selectedCategory)
+      ? typeof item.fields.merekMobil === "string" &&
+        item.fields.merekMobil.includes(selectedCategory)
       : true;
 
     const matchSearch = searchActive
-      ? item.fields.title?.toLowerCase().includes(searchQuery.toLowerCase())
+      ? typeof item.fields.title === "string" &&
+        item.fields.title.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
     return matchCategory && matchSearch;
@@ -148,19 +150,23 @@ const Katalog = () => {
               href={`katalog/${value.fields.slug}`}
               className="transition-shadow hover:shadow-lg"
             >
-              <Card className="p-2">
+              <Card className="flex h-full flex-col p-2">
                 <CardHeader className="p-0">
                   <img
                     src={`https:${
-                      (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
+                      (value.fields.thumbnail as any)?.fields?.file?.url || ""
                     }`}
-                    alt={(value.fields.title as any)?.toString() || "Car image"}
-                    className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
+                    alt="learn"
+                    className="h-[150px] w-full rounded-lg object-cover lg:h-[200px]"
                   />
                 </CardHeader>
-                <CardContent className="mt-[-1rem] p-0">
+                <CardContent className="mt-[-1rem] flex flex-1 flex-col justify-between p-0">
                   <CardTitle>
-                    {formatToRupiah(parseInt(value.fields.price))}
+                    {formatToRupiah(
+                      typeof value.fields.price === "string"
+                        ? value.fields.price
+                        : "0",
+                    )}
                   </CardTitle>
                   {value.fields.title &&
                   typeof value.fields.title === "string" ? (
@@ -171,10 +177,19 @@ const Katalog = () => {
                 </CardContent>
                 <CardFooter className="flex flex-wrap gap-1 p-0">
                   <Badge variant={"outline"} className="flex items-center">
-                    <Clock /> {value.fields.tahunProduksi}
+                    <Clock />{" "}
+                    {typeof value.fields.tahunProduksi === "number" ||
+                    typeof value.fields.tahunProduksi === "string"
+                      ? value.fields.tahunProduksi
+                      : ""}
                   </Badge>
                   <Badge variant={"outline"} className="flex items-center">
-                    <Gauge /> {value.fields.jalanKilometer} km
+                    <Gauge />{" "}
+                    {typeof value.fields.jalanKilometer === "number" ||
+                    typeof value.fields.jalanKilometer === "string"
+                      ? value.fields.jalanKilometer
+                      : ""}{" "}
+                    km
                   </Badge>
                   <Badge variant={"outline"} className="flex items-center">
                     <Calendar />{" "}

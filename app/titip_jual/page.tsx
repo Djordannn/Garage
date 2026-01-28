@@ -43,7 +43,7 @@ const TitipJual = () => {
   // form validation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultdata: {
+    defaultValues: {
       nama_pemilik: "",
       nama_mobil: "",
       merek_mobil: "",

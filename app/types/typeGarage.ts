@@ -38,13 +38,13 @@ export interface TypeGarageAsset {
     merekMobil: string;
     nomorPlat: string;
     namaPemilik: string;
-    image: {
+    image?: Array<{
       fields: {
         file: {
           url: string;
         };
       };
-    };
+    }>;
     thumbnail: {
       fields: {
         file: {

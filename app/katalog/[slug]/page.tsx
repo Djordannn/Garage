@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import contentfulClient from "@/app/lib/contentfulClient";
 import { TypeGarageAsset, TypeGarageSkeleton } from "@/app/types/typeGarage";
+import { TypeImgAsset } from "@/app/types/galleryCms";
 import { Entry } from "contentful";
 import {
   Carousel,
@@ -71,8 +72,12 @@ const DetailPage = () => {
   // Filter saran mobil berdasarkan merek yang sama dan exclude mobil yang sedang dilihat
   const suggestedCars = detail
     ? data.filter((item) => {
-        const detailBrand = getCarBrand(detail.fields.title);
-        const itemBrand = getCarBrand(item.fields.title);
+        const detailBrand = getCarBrand(
+          typeof detail.fields.title === "string" ? detail.fields.title : "",
+        );
+        const itemBrand = getCarBrand(
+          typeof item.fields.title === "string" ? item.fields.title : "",
+        );
         return detailBrand === itemBrand && item.sys.id !== detail.sys.id;
       })
     : [];
@@ -91,7 +96,13 @@ const DetailPage = () => {
   React.useEffect(() => {
     fetchdata();
     if (slug) {
-      getDetail(slug as string).then(setDetail);
+      getDetail(slug as string).then((entry) => {
+        if (entry) {
+          setDetail(entry as unknown as TypeGarageAsset);
+        } else {
+          setDetail(null);
+        }
+      });
     }
   }, [slug]);
 
@@ -101,11 +112,11 @@ const DetailPage = () => {
         <Carousel>
           <CarouselContent className="">
             {detail?.fields.image?.map(
-              (image: TypeGarageAsset, index: number) => (
+              (image: { fields: { file: { url: string } } }, index: number) => (
                 <CarouselItem key={index}>
                   <img
                     src={`https:${image.fields.file.url}`} // Add "https:" to ensure proper URL format
-                    alt={image.fields.title}
+                    alt={`${detail.fields.title} image ${index}`}
                     width={500} // Set the width for your image
                     height={300} // Set the height for your image
                     className="h-[400px] w-full rounded-lg object-cover" // Styling the images
@@ -124,7 +135,7 @@ const DetailPage = () => {
           <div>
             <h2 className="text-4xl font-bold">{detail?.fields.title}</h2>
             <p className="mt-2 text-2xl font-semibold">
-              {formatToRupiah(detail?.fields.price)}
+              {formatToRupiah(detail?.fields.price ? detail.fields.price : "0")}
             </p>
             <p className="mt-2 w-[80%] text-sm">{detail?.fields.description}</p>
             <div className="mt-4">
@@ -165,32 +176,51 @@ const DetailPage = () => {
           {suggestedCars.length > 0 ? (
             suggestedCars.map((value, index) => (
               <a key={index} href={`katalog/${value.fields.slug}`}>
-                <Card className="p-2">
+                <Card className="flex h-full flex-col p-2">
                   <CardHeader className="p-0">
                     <img
                       src={`https:${
                         (value.fields.thumbnail as TypeImgAsset)?.fields.file
                           .url
                       }`}
-                      alt="learn"
-                      className="h-[150px] w-full rounded-lg object-cover lg:h-[200px]"
+                      alt={
+                        (value.fields.title as any)?.toString() || "Car image"
+                      }
+                      className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
                     />
                   </CardHeader>
-                  <CardContent className="mt-[-1rem] p-0">
-                    <CardTitle>{formatToRupiah(value.fields.price)}</CardTitle>
-                    {value.fields.title &&
-                    typeof value.fields.title === "string" ? (
-                      <CardDescription>{value.fields.title}</CardDescription>
-                    ) : (
-                      "No Title"
-                    )}
+                  <CardContent className="mt-[-1rem] flex flex-1 flex-col justify-between p-0">
+                    <div>
+                      <CardTitle>
+                        {formatToRupiah(
+                          typeof value.fields.price === "string"
+                            ? value.fields.price
+                            : "0",
+                        )}
+                      </CardTitle>
+                      {value.fields.title &&
+                      typeof value.fields.title === "string" ? (
+                        <CardDescription>{value.fields.title}</CardDescription>
+                      ) : (
+                        "No Title"
+                      )}
+                    </div>
                   </CardContent>
                   <CardFooter className="flex flex-wrap gap-1 p-0">
                     <Badge variant={"outline"} className="flex items-center">
-                      <Clock /> {value.fields.tahunProduksi}
+                      <Clock />{" "}
+                      {typeof value.fields.tahunProduksi === "number" ||
+                      typeof value.fields.tahunProduksi === "string"
+                        ? value.fields.tahunProduksi
+                        : ""}
                     </Badge>
                     <Badge variant={"outline"} className="flex items-center">
-                      <Gauge /> {value.fields.jalanKilometer} km
+                      <Gauge />{" "}
+                      {typeof value.fields.jalanKilometer === "number" ||
+                      typeof value.fields.jalanKilometer === "string"
+                        ? value.fields.jalanKilometer
+                        : ""}{" "}
+                      km
                     </Badge>
                     <Badge variant={"outline"} className="flex items-center">
                       <Calendar />{" "}
