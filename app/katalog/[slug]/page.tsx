@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import contentfulClient from "@/app/lib/contentfulClient";
 import { TypeGarageAsset, TypeGarageSkeleton } from "@/app/types/typeGarage";
+import { Entry } from "contentful";
 import {
   Carousel,
   CarouselContent,
@@ -27,7 +28,7 @@ const getDetail = async (slug: string) => {
   try {
     const res = await contentfulClient.getEntries<TypeGarageSkeleton>({
       content_type: "garage",
-      "fields.slug[match]": slug,
+      "fields.slug": slug,
     });
     console.log(res.items[0]);
 
@@ -41,7 +42,7 @@ const getDetail = async (slug: string) => {
 const DetailPage = () => {
   const { slug } = useParams();
   const [detail, setDetail] = React.useState<TypeGarageAsset | null>(null);
-  const [data, setData] = React.useState<TypeGarageSkeleton[]>([]);
+  const [data, setData] = React.useState<Entry<TypeGarageSkeleton>[]>([]);
 
   const fetchdata = async () => {
     try {
@@ -59,7 +60,7 @@ const DetailPage = () => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).format(amount);
+    }).format(Number(amount));
   };
 
   // Ekstrak merek dari judul (kata pertama biasanya merek)
@@ -96,7 +97,7 @@ const DetailPage = () => {
 
   return (
     <div className="mt-6 px-[5%]">
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Carousel>
           <CarouselContent className="">
             {detail?.fields.image?.map(
@@ -150,7 +151,7 @@ const DetailPage = () => {
           <div>
             <Button
               onClick={() => onSubmit(detail)}
-              className="mt-[7rem] rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
+              className="mt-4 rounded-2xl hover:bg-zinc-700 hover:text-zinc-200 md:mt-[7rem]"
             >
               Hubungi Penjual
             </Button>

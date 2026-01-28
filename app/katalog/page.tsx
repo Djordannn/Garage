@@ -18,6 +18,7 @@ import { Entry } from "contentful";
 import { TypeGarageSkeleton } from "../types/typeGarage";
 import contentfulClient from "@/app/lib/contentfulClient";
 import { TypeImgAsset } from "../types/galleryCms";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Katalog = () => {
   const [garageData, setGarageData] = React.useState<
@@ -28,11 +29,13 @@ const Katalog = () => {
   );
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [searchActive, setSearchActive] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const categories = ["Toyota", "Honda", "Mitsubishi", "Suzuki", "Daihatsu"];
 
   const fetchdata = async () => {
     try {
+      setIsLoading(true);
       const res = await contentfulClient.getEntries<TypeGarageSkeleton>({
         content_type: "garage",
       });
@@ -40,6 +43,8 @@ const Katalog = () => {
       console.log("data : ", res.items);
     } catch (error) {
       console.log("ërror from fetch data contentful", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,22 +132,36 @@ const Katalog = () => {
           ))}
         </div>
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-        {filteredData.length > 0 ? (
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <div key={index}>
+              <Skeleton className="aspect-video w-full" />
+              <Skeleton className="mt-2 h-4 w-1/2" />
+              <Skeleton className="mt-2 h-4 w-1/3" />
+            </div>
+          ))
+        ) : filteredData.length > 0 ? (
           filteredData.map((value, index) => (
-            <a key={index} href={`katalog/${value.fields.slug}`}>
+            <a
+              key={index}
+              href={`katalog/${value.fields.slug}`}
+              className="transition-shadow hover:shadow-lg"
+            >
               <Card className="p-2">
                 <CardHeader className="p-0">
                   <img
                     src={`https:${
                       (value.fields.thumbnail as TypeImgAsset)?.fields.file.url
                     }`}
-                    alt="learn"
-                    className="h-[150px] w-full rounded-lg object-cover lg:h-[200px]"
+                    alt={(value.fields.title as any)?.toString() || "Car image"}
+                    className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
                   />
                 </CardHeader>
                 <CardContent className="mt-[-1rem] p-0">
-                  <CardTitle>{formatToRupiah(value.fields.price)}</CardTitle>
+                  <CardTitle>
+                    {formatToRupiah(parseInt(value.fields.price))}
+                  </CardTitle>
                   {value.fields.title &&
                   typeof value.fields.title === "string" ? (
                     <CardDescription>{value.fields.title}</CardDescription>
@@ -166,7 +185,7 @@ const Katalog = () => {
             </a>
           ))
         ) : (
-          <p className="col-span-2 mt-6 text-center text-gray-500">
+          <p className="mt-6 text-center text-gray-500">
             Tidak ada mobil yang ditemukan
           </p>
         )}

@@ -5,19 +5,20 @@ import type {
   EntrySkeletonType,
   LocaleCode,
 } from "contentful";
-
 export interface TypeGarageFields {
   title: EntryFieldTypes.Symbol;
   price: EntryFieldTypes.Symbol;
+  slug: EntryFieldTypes.Symbol; // ✅ WAJIB TAMBAH INI
+
   tahunProduksi?: EntryFieldTypes.Integer;
   jalanKilometer?: EntryFieldTypes.Integer;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   thumbnail?: EntryFieldTypes.AssetLink;
   pajak?: EntryFieldTypes.Boolean;
-  merekMobil?: EntryFieldTypes.Integer;
-  nomotrPlat?: EntryFieldTypes.Integer;
-  namaPemilik?: EntryFieldTypes.Integer;
-  description?: EntryFieldTypes.Integer;
+  merekMobil?: EntryFieldTypes.Symbol;
+  nomotrPlat?: EntryFieldTypes.Symbol;
+  namaPemilik?: EntryFieldTypes.Symbol;
+  description?: EntryFieldTypes.Symbol;
 }
 
 export type TypeGarageSkeleton = EntrySkeletonType<TypeGarageFields, "garage">;

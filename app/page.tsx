@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Navbar from "./components/navbar";
 import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
@@ -26,6 +25,7 @@ import { Entry } from "contentful";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IoSearchOutline } from "react-icons/io5";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const [garageData, setGarageData] = React.useState<
@@ -36,11 +36,13 @@ export default function Home() {
   );
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [searchActive, setSearchActive] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const categories = ["Toyota", "Honda", "Mitsubishi", "Suzuki", "Daihatsu"];
 
   const fetchdata = async () => {
     try {
+      setIsLoading(true);
       const res = await contentfulClient.getEntries<TypeGarageSkeleton>({
         content_type: "garage",
       });
@@ -48,10 +50,12 @@ export default function Home() {
       console.log("data : ", res.items);
     } catch (error) {
       console.log("ërror from fetch data contentful", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const formatToRupiah = (amount) => {
+  const formatToRupiah = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
@@ -69,7 +73,7 @@ export default function Home() {
 
   const filteredData = garageData.filter((item) => {
     const matchCategory = selectedCategory
-      ? item.fields.merekMobil?.includes(selectedCategory)
+      ? (item.fields.merekMobil as any)?.toString().includes(selectedCategory)
       : true;
 
     const matchSearch = searchActive
@@ -140,7 +144,8 @@ export default function Home() {
               <CarouselItem key={index}>
                 <img
                   src="https://i.pinimg.com/736x/7d/e0/f4/7de0f4c59fca6e3d5e3ec82afb2489e5.jpg"
-                  className="h-[200px] w-full rounded-2xl bg-cover bg-center object-cover sm:h-[250px] lg:h-[300px]"
+                  alt="Carousel image"
+                  className="h-[200px] w-full rounded-2xl bg-cover bg-center object-cover sm:h-[250px] lg:h-[400px]"
                   style={{
                     backgroundImage: `url('/carousel/carousel-${
                       index + 1
@@ -157,10 +162,22 @@ export default function Home() {
           <h2 className="mb-4pb-2 text-2xl font-semibold">Cari mobil anda</h2>
           <div className="mx-auto mt-2 mb-6 w-[80px] rounded-full border-[1px] border-black"></div>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
-          {filteredData.length > 0 ? (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <div key={index}>
+                <Skeleton className="aspect-video w-full" />
+                <Skeleton className="mt-2 h-4 w-1/2" />
+                <Skeleton className="mt-2 h-4 w-1/3" />
+              </div>
+            ))
+          ) : filteredData.length > 0 ? (
             filteredData.map((value, index) => (
-              <a key={index} href={`katalog/${value.fields.slug}`}>
+              <a
+                key={index}
+                href={`katalog/${value.fields.slug}`}
+                className="transition-shadow hover:shadow-lg"
+              >
                 <Card className="p-2">
                   <CardHeader className="p-0">
                     <img
@@ -168,12 +185,16 @@ export default function Home() {
                         (value.fields.thumbnail as TypeImgAsset)?.fields.file
                           .url
                       }`}
-                      alt="learn"
-                      className="h-[150px] w-full rounded-lg object-cover lg:h-[200px]"
+                      alt={
+                        (value.fields.title as any)?.toString() || "Car image"
+                      }
+                      className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
                     />
                   </CardHeader>
                   <CardContent className="mt-[-1rem] p-0">
-                    <CardTitle>{formatToRupiah(value.fields.price)}</CardTitle>
+                    <CardTitle>
+                      {formatToRupiah(parseInt(value.fields.price))}
+                    </CardTitle>
                     {value.fields.title &&
                     typeof value.fields.title === "string" ? (
                       <CardDescription>{value.fields.title}</CardDescription>
@@ -199,7 +220,7 @@ export default function Home() {
               </a>
             ))
           ) : (
-            <p className="col-span-2 mt-6 text-center text-gray-500">
+            <p className="mt-6 text-center text-gray-500">
               Tidak ada mobil yang ditemukan
             </p>
           )}

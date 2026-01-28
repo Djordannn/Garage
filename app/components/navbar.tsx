@@ -12,7 +12,7 @@ import {
 export default function Navbar() {
   return (
     <div className="px-[5%] font-sans">
-      <nav className="grid grid-cols-2 items-center pt-6 sm:grid-cols-2">
+      <nav className="grid grid-cols-2 items-center sm:grid-cols-2 md:pt-6">
         <Link href="/">
           <Image src={logo} alt="BMW" className="w-[150px]" />
         </Link>
