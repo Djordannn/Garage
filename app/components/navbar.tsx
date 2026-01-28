@@ -12,9 +12,9 @@ import {
 export default function Navbar() {
   return (
     <div className="px-[5%] font-sans">
-      <nav className="grid grid-cols-2 items-center sm:grid-cols-2 md:pt-6">
+      <nav className="grid grid-cols-2 items-center pt-4 sm:grid-cols-2 md:pt-6">
         <Link href="/">
-          <h2 className="text-2xl font-semibold">Logo</h2>
+          <Image src={logo} alt="BMW" className="w-[150px]" />
         </Link>
         <div className="hidden gap-6 font-medium text-gray-700 sm:justify-end lg:flex">
           <Link href="/">Beranda</Link>
