@@ -175,7 +175,7 @@ const DetailPage = () => {
         <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
           {suggestedCars.length > 0 ? (
             suggestedCars.map((value, index) => (
-              <a key={index} href={`katalog/${value.fields.slug}`}>
+              <a key={index} href={`/katalog/${value.fields.slug}`}>
                 <Card className="flex h-full flex-col p-2">
                   <CardHeader className="p-0">
                     <img

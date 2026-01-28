@@ -92,7 +92,7 @@ export default function Home() {
   return (
     <div className="overflow-y-hidden px-[5%] font-sans">
       <div>
-        <div className="relative flex items-center gap-2">
+        <div className="relative mt-4 flex items-center gap-2">
           <div className="absolute top-1/2 left-0 flex -translate-y-1/2 items-center">
             <Button
               onClick={handleSearch}
