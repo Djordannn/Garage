@@ -83,7 +83,7 @@ const Katalog = () => {
   }, []);
 
   return (
-    <div className="px-[5%]">
+    <div className="overflow-y-hidden px-[5%]">
       <div>
         <div className="relative flex items-center gap-2">
           <div className="absolute top-1/2 left-0 flex -translate-y-1/2 items-center">
