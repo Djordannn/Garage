@@ -117,7 +117,7 @@ const Katalog = () => {
           {/* 
           <SidebarTrigger /> */}
         </div>
-        <div className="mt-4 flex gap-2">
+        <div className="categories-container scrollbar-hidden mt-4 flex gap-2 overflow-x-auto">
           {categories.map((category) => (
             <Button
               key={category}
