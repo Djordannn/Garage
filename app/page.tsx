@@ -190,7 +190,7 @@ export default function Home() {
                       alt={
                         (value.fields.title as any)?.toString() || "Car image"
                       }
-                      className="h-[150px] w-full rounded-lg object-cover lg:h-[250px]"
+                      className="h-[150px] w-full rounded-lg object-cover object-center lg:h-[250px]"
                     />
                   </CardHeader>
                   <CardContent className="mt-[-1rem] flex flex-1 flex-col justify-between p-0">

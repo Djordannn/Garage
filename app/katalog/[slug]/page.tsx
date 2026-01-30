@@ -170,6 +170,23 @@ const DetailPage = () => {
         </div>
       </div>
 
+      <div className="py-24">
+        <h2 className="text-3xl font-bold">Detail Variasi</h2>
+        <div>
+          <ul className="mt-2">
+            {detail?.fields.variasi ? (
+              detail?.fields.variasi.map((value: string, idx: number) => (
+                <li key={idx} className="list-disc text-lg">
+                  {value}
+                </li>
+              ))
+            ) : (
+              <p className="list-disc text-lg">Tidak ada variasi tersedia</p>
+            )}
+          </ul>
+        </div>
+      </div>
+
       <div className="mt-12 pb-24">
         <h2 className="mb-6 text-3xl font-bold">Saran Mobil Serupa</h2>
         <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">

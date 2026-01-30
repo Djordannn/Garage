@@ -19,6 +19,7 @@ export interface TypeGarageFields {
   nomotrPlat?: EntryFieldTypes.Symbol;
   namaPemilik?: EntryFieldTypes.Symbol;
   description?: EntryFieldTypes.Symbol;
+  variasi?: EntryFieldTypes.Symbol;
 }
 
 export type TypeGarageSkeleton = EntrySkeletonType<TypeGarageFields, "garage">;
@@ -38,6 +39,7 @@ export interface TypeGarageAsset {
     merekMobil: string;
     nomorPlat: string;
     namaPemilik: string;
+    variasi: string;
     image?: Array<{
       fields: {
         file: {
