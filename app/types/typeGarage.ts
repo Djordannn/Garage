@@ -39,7 +39,7 @@ export interface TypeGarageAsset {
     merekMobil: string;
     nomorPlat: string;
     namaPemilik: string;
-    variasi: string;
+    variasi: string[];
     image?: Array<{
       fields: {
         file: {
