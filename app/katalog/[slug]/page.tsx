@@ -85,7 +85,7 @@ const DetailPage = () => {
   const onSubmit = (value: TypeGarageAsset | null) => {
     if (!detail) return;
 
-    const phoneNumber = "6282157402571";
+    const phoneNumber = "628135221337";
     const text = `Halo, Saya ingin menanyakan tentang mobil ${value?.fields.title} yang Anda jual.
         `;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;

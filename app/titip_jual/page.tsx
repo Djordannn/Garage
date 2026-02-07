@@ -57,18 +57,18 @@ const TitipJual = () => {
   });
 
   const onSubmit = (value: z.infer<typeof formSchema>) => {
-    const phoneNumber = "6282157402571";
+    const phoneNumber = "628135221337";
     const text = `Halo, Saya ${value.nama_pemilik} ingin menitip jual mobil dengan detail sebagai berikut:
-    Nama Mobil: ${value.nama_mobil}
-    Merek Mobil: ${value.merek_mobil} 
-    Nomor Plat & Kabupaten: ${value.nomor_plat}
-    Kilometer: ${value.kilometer}
-    Tahun Pembuatan: ${value.tahun_pembuatan}
-    Pajak Berlaku Sampai: ${value.pajak_berlaku}
-    Harga Jual: ${value.harga_jual}
-    Nomor Telp: ${value.nomor_telp}
+  Nama Mobil: ${value.nama_mobil}
+  Merek Mobil: ${value.merek_mobil} 
+  Nomor Plat & Kabupaten: ${value.nomor_plat}
+  Kilometer: ${value.kilometer}
+  Tahun Pembuatan: ${value.tahun_pembuatan}
+  Pajak Berlaku Sampai: ${value.pajak_berlaku}
+  Harga Jual: ${value.harga_jual}
+  Nomor Telp: ${value.nomor_telp}
 
-    Terima kasih!
+  Terima kasih!
     `;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
 
