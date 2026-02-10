@@ -27,16 +27,16 @@ const Footer = () => {
       <div>
         <h2 className="mb-4">Links</h2>
         <ul className="flex flex-col gap-2 text-sm text-zinc-400">
-          <li>Beranda</li>
-          <li>Katalog</li>
-          <li>Titip Jual</li>
-          <li>Contact</li>
+          <li><a href="/">Beranda</a></li>
+          <li><a href="/katalog">Katalog</a></li>
+          <li><a href="/titip_jual">Titip Jual</a></li>
+          <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
       <div>
         <h2 className="mb-4">Contact</h2>
         <ul className="flex flex-col gap-2 text-sm text-zinc-400">
-          <li>+62 837 2882 8736</li>
+          <li>+62 813 522 1337</li>
           <li>example@gmail.com</li>
           <li>Jln.pangeran diponegoro</li>
         </ul>
