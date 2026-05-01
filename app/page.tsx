@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IoSearchOutline } from "react-icons/io5";
 import { Skeleton } from "@/components/ui/skeleton";
+import banner from "@/public/banner.jpeg";
 
 export default function Home() {
   const [garageData, setGarageData] = React.useState<
@@ -145,9 +146,9 @@ export default function Home() {
             {Array.from({ length: 5 }).map((_, index) => (
               <CarouselItem key={index}>
                 <img
-                  src="https://i.pinimg.com/736x/7d/e0/f4/7de0f4c59fca6e3d5e3ec82afb2489e5.jpg"
+                  src={banner.src}
                   alt="Carousel image"
-                  className="h-[200px] w-full rounded-2xl bg-cover bg-center object-cover sm:h-[250px] lg:h-[400px]"
+                  className="w-full rounded-2xl bg-cover bg-center object-cover"
                   style={{
                     backgroundImage: `url('/carousel/carousel-${
                       index + 1
