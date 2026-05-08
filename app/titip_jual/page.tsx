@@ -65,7 +65,7 @@ const TitipJual = () => {
   Kilometer: ${value.kilometer}
   Tahun Pembuatan: ${value.tahun_pembuatan}
   Pajak Berlaku Sampai: ${value.pajak_berlaku}
-  Harga Jual: ${value.harga_jual}
+  Harga Jual: Rp ${typeof value.harga_jual === "string" ? parseInt(value.harga_jual).toLocaleString("id-ID") : value.harga_jual}
   Nomor Telp: ${value.nomor_telp}
 
   Terima kasih!
@@ -76,9 +76,9 @@ const TitipJual = () => {
   };
 
   return (
-    <div className="pb-24 mt-4 px-[5%]">
+    <div className="mt-4 px-[5%] pb-24">
       <div>
-        <h1 className="text-4xl mb-4 font-semibold">
+        <h1 className="mb-4 text-4xl font-semibold">
           Jual mobil kamu anti ribet, <br />
           kami yang urus!
         </h1>
@@ -205,7 +205,7 @@ const TitipJual = () => {
         </FieldGroup>
         <Button
           type="submit"
-          className="mt-6  hover:bg-zinc-700 hover:text-zinc-200"
+          className="mt-6 hover:bg-zinc-700 hover:text-zinc-200"
         >
           Kirim
         </Button>

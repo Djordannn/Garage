@@ -27,6 +27,14 @@ import { Input } from "@/components/ui/input";
 import { IoSearchOutline } from "react-icons/io5";
 import { Skeleton } from "@/components/ui/skeleton";
 import banner from "@/public/banner.jpeg";
+import banner1 from "@/public/banner1.png";
+import banner2 from "@/public/banner2.png";
+
+const fetchbanner = [
+  { banner1: banner },
+  { banner2: banner1 },
+  { banner3: banner2 },
+];
 
 export default function Home() {
   const [garageData, setGarageData] = React.useState<
@@ -143,10 +151,14 @@ export default function Home() {
       <div className="mt-6">
         <Carousel plugins={[Autoplay({ delay: 5000 })]}>
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {fetchbanner.map((value, index) => (
               <CarouselItem key={index}>
                 <img
-                  src={banner.src}
+                  src={
+                    value.banner1?.src ||
+                    value.banner2?.src ||
+                    value.banner3?.src
+                  }
                   alt="Carousel image"
                   className="w-full rounded-2xl bg-cover bg-center object-cover"
                   style={{

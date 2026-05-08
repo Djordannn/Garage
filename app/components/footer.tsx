@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram } from "lucide-react";
 import React from "react";
-import { IoLogoWhatsapp } from "react-icons/io5";
+import { IoLogoWhatsapp, IoMail, IoMap } from "react-icons/io5";
 
 const Footer = () => {
   return (
@@ -27,18 +27,56 @@ const Footer = () => {
       <div>
         <h2 className="mb-4">Links</h2>
         <ul className="flex flex-col gap-2 text-sm text-zinc-400">
-          <li><a href="/">Beranda</a></li>
-          <li><a href="/katalog">Katalog</a></li>
-          <li><a href="/titip_jual">Titip Jual</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li>
+            <a href="/">Beranda</a>
+          </li>
+          <li>
+            <a href="/katalog">Katalog</a>
+          </li>
+          <li>
+            <a href="/titip_jual">Titip Jual</a>
+          </li>
+          <li>
+            <a href="/contact">Contact</a>
+          </li>
         </ul>
       </div>
       <div>
         <h2 className="mb-4">Contact</h2>
         <ul className="flex flex-col gap-2 text-sm text-zinc-400">
-          <li>+62 813 522 1337</li>
-          <li>example@gmail.com</li>
-          <li>Jln.pangeran diponegoro</li>
+          <li>
+            <a
+              href="https://wa.me/628135221337"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <IoLogoWhatsapp />
+              +62 881-3522-1337
+            </a>
+          </li>
+          <li>
+            <a
+              href="mailto:narasiautocars@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <IoMail />
+              narasiautocars@gmail.com
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.google.com/maps/place/Narasi+Autocars/@-2.4891458,111.8161986,17z/data=!3m1!4b1!4m6!3m5!1s0x2e08890000cb26d5:0xa129d651ae06c545!8m2!3d-2.4891458!4d111.8187789!16s%2Fg%2F11zb1y7drk?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <IoMap />
+              Pangkalan Dewa SP 1
+            </a>
+          </li>
         </ul>
       </div>
     </div>

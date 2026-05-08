@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Calendar, Clock, Gauge } from "lucide-react";
+import { Calendar, Clock, Currency, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -156,13 +156,17 @@ const DetailPage = () => {
                       : "Pajak mati"}
                   </p>
                 </li>
+                <li className="flex gap-2">
+                  <Currency />{" "}
+                  <p className="text-lg">{detail?.fields.tdp || "-"}</p>
+                </li>
               </ul>
             </div>
           </div>
           <div>
             <Button
               onClick={() => onSubmit(detail)}
-              className="mt-4 rounded-2xl hover:bg-zinc-700 hover:text-zinc-200 md:mt-[7rem]"
+              className="mt-4 rounded-2xl hover:bg-zinc-700 hover:text-zinc-200"
             >
               Hubungi Penjual
             </Button>
